@@ -23,8 +23,9 @@ lazy_static! {
 /// function injected by the [`#[traced_test]`](attr.traced_test.html) macro.
 pub fn logs_with_scope_contain(scope: &str, val: &str) -> bool {
     let logs = String::from_utf8(GLOBAL_BUF.lock().unwrap().to_vec()).unwrap();
+    let scope = format!(" {}:", scope);
     for line in logs.split('\n') {
-        if line.contains(&format!(" {}:", scope)) && line.contains(val) {
+        if line.contains(&scope) && line.contains(val) {
             return true;
         }
     }
